@@ -1,0 +1,693 @@
+/*
+ * Copyright (c) 2018 MediaTek Inc.
+ *
+ * SPDX-License-Identifier: (GPL-2.0 OR MIT)
+ */
+
+/dts-v1/;
+#include "mt8518a.dtsi"
+#include "mt6397.dtsi"
+
+/ {
+	model = "MediaTek MT8518A M1V1 board";
+	compatible = "mediatek,mt8518am1", "mediatek,mt8518";
+
+	aliases {
+		serial0 = &uart0;
+	};
+
+	audio_spi: audio_spi {
+		compatible = "mediatek,mt8518-audio-spi";
+		memory-region = <&adsp_reserved_memory>;
+		status = "okay";
+	};
+
+	memory@40000000 {
+		device_type = "memory";
+		reg = <0 0x40000000 0 0x20000000>;
+	};
+
+	chosen {
+		bootargs = "console=ttyS0,921600n1 ubi.mtd=8,4096 \
+root=ubi0:aud8518am1-slc-32b-rootfs rootfstype=ubifs \
+0x91ea22 earlycon=uart8250,mmio32,\
+0x11005000 initcall_debug loglevel=8 \
+androidboot.hardware=mt8518 \
+firmware_class.path=/lib/firmware";
+	};
+
+	mmc_clk: dummy12m@0 {
+		compatible = "fixed-clock";
+		clock-frequency = <12000000>;
+		#clock-cells = <0>;
+	};
+
+	mmc_fixed_3v3: fixedregulator@0 {
+		compatible = "regulator-fixed";
+		regulator-name = "mmc_power";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		enable-active-high;
+		regulator-always-on;
+	};
+
+	mmc_fixed_1v8_io: fixedregulator@1 {
+		compatible = "regulator-fixed";
+		regulator-name = "mmc_io";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		enable-active-high;
+		regulator-always-on;
+	};
+
+	mt8570_ipi: mt8570_ipi {
+		compatible = "mediatek,mt8570_ipi";
+		status = "okay";
+	};
+
+	reserved-memory {
+		adsp_reserved_memory: ipcbuffer@43030000 {
+			compatible = "mediatek,mt8518-adsp-reserve-memory";
+			no-map;
+			reg = <0 0x43030000 0 0x500000>;
+		};
+
+		mtee-reserved-memory {
+			compatible = "mediatek,mt8518-mtee-reserved-memory";
+			no-map;
+			reg = <0 0x5FD00000 0 0x300000>;
+		};
+	};
+
+	sound: sound {
+		compatible = "mediatek,mt8518-evb";
+		mediatek,platform = <&afe>;
+		mediatek,spi-platform = <&audio_spi>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&aud_pins_default>;
+		status = "okay";
+	};
+};
+
+&afe {
+	status = "okay";
+};
+
+&auxadc {
+	status = "okay";
+};
+
+&bch {
+	status = "okay";
+};
+
+&cpu0 {
+	proc-supply = <&mt6397_vpca15_reg>;
+};
+
+&cpu1 {
+	proc-supply = <&mt6397_vpca15_reg>;
+};
+
+&cpu2 {
+	proc-supply = <&mt6397_vpca15_reg>;
+};
+
+&cpu3 {
+	proc-supply = <&mt6397_vpca15_reg>;
+};
+
+&i2c0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c0_pins>;
+	status = "okay";
+};
+
+&i2c1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c1_pins>;
+	status = "okay";
+	lp5523@32{
+	compatible = "national,lp5523";
+	reg = <0x32>;
+	enable-gpio = <&pio 90 0>;
+	clock-mode = /bits/ 8 <1>;
+
+	chan0 {
+		chan-name = "d1";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan1 {
+		chan-name = "d2";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan2 {
+		chan-name = "d3";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan3 {
+		chan-name = "d4";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan4 {
+		chan-name = "d5";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan5 {
+		chan-name = "d6";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan6 {
+		chan-name = "d7";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan7 {
+		chan-name = "d8";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan8 {
+		chan-name = "d9";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+		};
+	};
+	lp5523@33{
+	compatible = "national,lp5523";
+	reg = <0x33>;
+	enable-gpio = <&pio 90 0>;
+	clock-mode = /bits/ 8 <1>;
+
+	chan0 {
+		chan-name = "d1_1";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan1 {
+		chan-name = "d1_2";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan2 {
+		chan-name = "d1_3";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+	chan3 {
+		chan-name = "d1_4";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan4 {
+		chan-name = "d1_5";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan5 {
+		chan-name = "d1_6";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan6 {
+		chan-name = "d1_7";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan7 {
+		chan-name = "d1_8";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan8 {
+		chan-name = "d1_9";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+		};
+    };
+	lp5523@34{
+	compatible = "national,lp5523";
+	reg = <0x34>;
+	enable-gpio = <&pio 90 0>;
+	clock-mode = /bits/ 8 <1>;
+
+	chan0 {
+		chan-name = "d2_1";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan1 {
+		chan-name = "d2_2";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan2 {
+		chan-name = "d2_3";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan3 {
+		chan-name = "d2_4";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan4 {
+		chan-name = "d2_5";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan5 {
+		chan-name = "d2_6";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan6 {
+		chan-name = "d2_7";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan7 {
+		chan-name = "d2_8";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan8 {
+		chan-name = "d2_9";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+		};
+    };
+	lp5523@35{
+	compatible = "national,lp5523";
+	reg = <0x35>;
+	enable-gpio = <&pio 90 0>;
+	clock-mode = /bits/ 8 <1>;
+
+	chan0 {
+		chan-name = "d3_1";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan1 {
+		chan-name = "d3_2";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan2 {
+		chan-name = "d3_3";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan3 {
+		chan-name = "d3_4";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan4 {
+		chan-name = "d3_5";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan5 {
+		chan-name = "d3_6";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan6 {
+		chan-name = "d3_7";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan7 {
+		chan-name = "d3_8";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+	};
+
+	chan8 {
+		chan-name = "d3_9";
+		led-cur = /bits/ 8 <0x20>;
+		max-cur = /bits/ 8 <0xff>;
+		};
+    };
+};
+
+&i2c2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c2_pins>;
+	status = "okay";
+};
+
+&i2c3 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c3_pins>;
+	status = "okay";
+};
+
+&mmc1 {
+	status = "okay";
+	pinctrl-names = "default", "state_uhs";
+	pinctrl-0 = <&mmc1_pins_default>;
+	pinctrl-1 = <&mmc1_pins_uhs>;
+	bus-width = <4>;
+	max-frequency = <200000000>;
+	cap-sd-highspeed;
+	sd-uhs-sdr50;
+	sd-uhs-sdr104;
+	vmmc-supply = <&mt6397_vmch_reg>;
+	vqmmc-supply = <&mt6397_vmc_reg>;
+	no-mmc;
+	no-sdio;
+	non-removable;
+};
+
+&mmc2 {
+	status = "okay";
+	pinctrl-names = "default", "state_uhs";
+	pinctrl-0 = <&mmc2_pins_default>;
+	pinctrl-1 = <&mmc2_pins_uhs>;
+	bus-width = <4>;
+	max-frequency = <200000000>;
+	cap-sd-highspeed;
+	keep-power-in-suspend;
+	enable-sdio-wakeup;
+	cap-sdio-irq;
+	drv-type = <2>;
+	no-sd;
+	no-mmc;
+	non-removable;
+};
+
+&pcie {
+	pcie@0,0 {
+		status = "okay";
+	};
+};
+
+&mt8570_ipi {
+	interrupt-parent = <&pio>;
+	interrupts = <99 IRQ_TYPE_EDGE_RISING>;
+	status = "okay";
+};
+
+&nandc {
+	pinctrl-names = "default";
+	pinctrl-0 = <&nand_pins_default>;
+	status = "okay";
+	nand@0 {
+		reg = <0>;
+		nand-on-flash-bbt;
+		nand-ecc-mode = "hw";
+	};
+};
+
+&pio {
+	pinctrl-names = "default";
+
+	aud_pins_default: audiodefault {
+	};
+
+	i2c0_pins: i2c0 {
+		pins_bus {
+			pinmux = <MT8518_PIN_110_SDA0__FUNC_SDA0_0>,
+				 <MT8518_PIN_111_SCL0__FUNC_SCL0_0>;
+			bias-disable;
+		};
+	};
+
+	i2c1_pins: i2c1 {
+		pins_bus {
+			pinmux = <MT8518_PIN_108_SDA1__FUNC_SDA1_0>,
+				 <MT8518_PIN_109_SCL1__FUNC_SCL1_0>;
+			bias-disable;
+		};
+	};
+
+	i2c2_pins: i2c2 {
+		pins_bus {
+			pinmux = <MT8518_PIN_112_SDA2__FUNC_SDA2_0>,
+				 <MT8518_PIN_113_SCL2__FUNC_SCL2_0>;
+			bias-disable;
+		};
+	};
+
+	i2c3_pins: i2c3 {
+		pins_bus {
+			pinmux = <MT8518_PIN_21_SDA3__FUNC_SDA3_0>,
+				 <MT8518_PIN_22_SCL3__FUNC_SCL3_0>;
+			bias-disable;
+		};
+	};
+
+	mmc1_pins_default: mmc1default {
+		pins_cmd_dat {
+			pinmux = <MT8518_PIN_116_MSDC1_DAT0__FUNC_MSDC1_DAT0>,
+				 <MT8518_PIN_117_MSDC1_DAT1__FUNC_MSDC1_DAT1>,
+				 <MT8518_PIN_118_MSDC1_DAT2__FUNC_MSDC1_DAT2>,
+				 <MT8518_PIN_119_MSDC1_DAT3__FUNC_MSDC1_DAT3>,
+				 <MT8518_PIN_114_MSDC1_CMD__FUNC_MSDC1_CMD>;
+			input-enable;
+			drive-strength = <MTK_DRIVE_8mA>;
+			bias-pull-up = <MTK_PUPD_SET_R1R0_01>;
+		};
+
+		pins_clk {
+			pinmux = <MT8518_PIN_115_MSDC1_CLK__FUNC_MSDC1_CLK>;
+			drive-strength = <MTK_DRIVE_8mA>;
+			bias-pull-down = <MTK_PUPD_SET_R1R0_10>;
+		};
+	};
+
+	mmc1_pins_uhs: mmc1@0 {
+		pins_cmd_dat {
+			pinmux = <MT8518_PIN_116_MSDC1_DAT0__FUNC_MSDC1_DAT0>,
+				 <MT8518_PIN_117_MSDC1_DAT1__FUNC_MSDC1_DAT1>,
+				 <MT8518_PIN_118_MSDC1_DAT2__FUNC_MSDC1_DAT2>,
+				 <MT8518_PIN_119_MSDC1_DAT3__FUNC_MSDC1_DAT3>,
+				 <MT8518_PIN_114_MSDC1_CMD__FUNC_MSDC1_CMD>;
+			input-enable;
+			drive-strength = <MTK_DRIVE_6mA>;
+			bias-pull-up = <MTK_PUPD_SET_R1R0_01>;
+		};
+
+		pins_clk {
+			pinmux = <MT8518_PIN_115_MSDC1_CLK__FUNC_MSDC1_CLK>;
+			drive-strength = <MTK_DRIVE_8mA>;
+			bias-pull-down = <MTK_PUPD_SET_R1R0_10>;
+		};
+	};
+
+	mmc2_pins_default: mmc2default {
+		pins_cmd_dat {
+			pinmux = <MT8518_PIN_29_MSDC2_CMD__FUNC_MSDC2_CMD>,
+			       <MT8518_PIN_31_MSDC2_DAT0__FUNC_MSDC2_DAT0>,
+			       <MT8518_PIN_32_MSDC2_DAT1__FUNC_MSDC2_DAT1>,
+			       <MT8518_PIN_33_MSDC2_DAT2__FUNC_MSDC2_DAT2>,
+			       <MT8518_PIN_34_MSDC2_DAT3__FUNC_MSDC2_DAT3>;
+			input-enable;
+			bias-pull-up = <MTK_PUPD_SET_R1R0_01>;
+		};
+
+		pins_clk {
+			pinmux = <MT8518_PIN_30_MSDC2_CLK__FUNC_MSDC2_CLK>;
+			bias-pull-down = <MTK_PUPD_SET_R1R0_10>;
+		};
+	};
+
+	mmc2_pins_uhs: mmc2@0{
+		pins_cmd_dat {
+			pinmux = <MT8518_PIN_29_MSDC2_CMD__FUNC_MSDC2_CMD>,
+			       <MT8518_PIN_31_MSDC2_DAT0__FUNC_MSDC2_DAT0>,
+			       <MT8518_PIN_32_MSDC2_DAT1__FUNC_MSDC2_DAT1>,
+			       <MT8518_PIN_33_MSDC2_DAT2__FUNC_MSDC2_DAT2>,
+			       <MT8518_PIN_34_MSDC2_DAT3__FUNC_MSDC2_DAT3>;
+			input-enable;
+			drive-strength = <MTK_DRIVE_6mA>;
+			bias-pull-up = <MTK_PUPD_SET_R1R0_01>;
+		};
+
+		pins_clk {
+			pinmux = <MT8518_PIN_30_MSDC2_CLK__FUNC_MSDC2_CLK>;
+			drive-strength = <MTK_DRIVE_4mA>;
+			bias-pull-down = <MTK_PUPD_SET_R1R0_10>;
+		};
+
+		pins_ds {
+			pinmux = <MT8518_PIN_35_MSDC2_DS__FUNC_MSDC2_DS>;
+			drive-strength = <MTK_DRIVE_4mA>;
+			bias-pull-down = <MTK_PUPD_SET_R1R0_10>;
+		};
+	};
+
+	nand_pins_default: nanddefault {
+		pins_dat {
+			pinmux = <MT8518_PIN_3_MSDC0_DAT7__FUNC_NLD7>,
+				 <MT8518_PIN_4_MSDC0_DAT6__FUNC_NLD6>,
+				 <MT8518_PIN_5_MSDC0_DAT5__FUNC_NLD4>,
+				 <MT8518_PIN_6_MSDC0_DAT4__FUNC_NLD3>,
+				 <MT8518_PIN_7_MSDC0_RSTB__FUNC_NLD0>,
+				 <MT8518_PIN_10_MSDC0_DAT3__FUNC_NLD1>,
+				 <MT8518_PIN_11_MSDC0_DAT2__FUNC_NLD5>,
+				 <MT8518_PIN_13_MSDC0_DAT0__FUNC_NLD2>;
+			input-enable;
+			bias-pull-up;
+		};
+
+		pins_cmd {
+			pinmux = <MT8518_PIN_0_NFI_NCEB0__FUNC_NCEB0>,
+				 <MT8518_PIN_1_NFI_NREB__FUNC_NREB>,
+				 <MT8518_PIN_2_NFI_NRNB__FUNC_NRNB>,
+				 <MT8518_PIN_8_MSDC0_CMD__FUNC_NALE>,
+				 <MT8518_PIN_9_MSDC0_CLK__FUNC_NWEB>,
+				 <MT8518_PIN_12_MSDC0_DAT1__FUNC_NCLE>;
+			bias-pull-up;
+		};
+	};
+
+	spi_pins_0: spi0@0 {
+		pins_spi {
+			pinmux = <MT8518_PIN_29_MSDC2_CMD__FUNC_SPI0_CSB>,
+				<MT8518_PIN_30_MSDC2_CLK__FUNC_SPI0_CLK>,
+				<MT8518_PIN_31_MSDC2_DAT0__FUNC_SPI0_MI>,
+				<MT8518_PIN_32_MSDC2_DAT1__FUNC_SPI0_MO>;
+			bias-disable;
+		};
+	};
+
+	spi_pins_1: spi1@0 {
+		pins_spi {
+			pinmux = <MT8518_PIN_92_SPI2_CS__FUNC_SPI2_CSB>,
+				<MT8518_PIN_93_SPI2_CK__FUNC_SPI2_CLK>,
+				<MT8518_PIN_94_SPI2_MI0__FUNC_SPI2_MI0>,
+				<MT8518_PIN_95_SPI2_MI1__FUNC_SPI2_MI1>,
+				<MT8518_PIN_96_SPI2_MI2__FUNC_SPI2_MI2>,
+				<MT8518_PIN_97_SPI2_MI3__FUNC_SPI2_MI3>;
+			bias-disable;
+		};
+	};
+
+	spi_pins_2: spi2@0 {
+		pins_spi {
+			pinmux = <MT8518_PIN_88_SPI1_CS__FUNC_SPI1_CSB>,
+				<MT8518_PIN_89_SPI1_CK__FUNC_SPI1_CLK>,
+				<MT8518_PIN_90_SPI1_MI__FUNC_SPI1_MI>,
+				<MT8518_PIN_91_SPI1_MO__FUNC_SPI1_MO>;
+			bias-disable;
+		};
+	};
+
+	/* USB GPIO start */
+	usb0_drvvbus: drvvbus_init {
+		pins_cmd_dat {
+			pinmux = <MT8518_PIN_57_EINT16__FUNC_GPIO57>;
+			output-low;
+		};
+	};
+
+	usb0_drvvbus_high: drvvbus_high {
+		pins_cmd_dat {
+			pinmux = <MT8518_PIN_57_EINT16__FUNC_GPIO57>;
+			output-high;
+		};
+	};
+
+	usb0_drvvbus_low: drvvbus_low {
+		pins_cmd_dat {
+			pinmux = <MT8518_PIN_57_EINT16__FUNC_GPIO57>;
+			output-low;
+		};
+	};
+
+	usb0_iddig: iddig_irq_init {
+		pins_cmd_dat {
+			pinmux = <MT8518_PIN_47_EINT11__FUNC_GPIO47>;
+			bias-pull-up;
+		};
+	};
+
+	usb0_vbus_detect: vbus_detect_irq_init {
+		pins_cmd_dat {
+			pinmux = <MT8518_PIN_60_EINT19__FUNC_GPIO60>;
+			bias-disable;
+		};
+	};
+	/* USB GPIO end */
+};
+
+&spi1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&spi_pins_1>;
+	mediatek,pad-select = <0>;
+	status = "okay";
+
+	spidev1: spi@0 {
+		compatible = "mediatek,hifi4dsp";
+		reg = <0>;
+		spi-tx-bus-width = <4>;
+		spi-rx-bus-width = <4>;
+		spi-max-frequency = <12000000>;
+	};
+};
+
+&svs {
+	vproc-supply = <&mt6397_vpca15_reg>;
+};
+
+&uart0 {
+	status = "okay";
+};
+
+&usb0 {
+	interrupts-extended = <&sysirq GIC_SPI 72 IRQ_TYPE_LEVEL_LOW>;
+	pinctrl-names = "iddig_irq_init",
+			"drvvbus_init",
+			"drvvbus_low",
+			"drvvbus_high",
+			"vbus_detect_irq_init";
+	pinctrl-0 = <&usb0_iddig>;
+	pinctrl-1 = <&usb0_drvvbus>;
+	pinctrl-2 = <&usb0_drvvbus_low>;
+	pinctrl-3 = <&usb0_drvvbus_high>;
+	pinctrl-4 = <&usb0_vbus_detect>;
+	status = "okay";
+	sw_default_mode = <0>;
+	iddig_gpio = <&pio 47 0>;
+	drvvbus_gpio = <&pio 57 0>;
+	vbusdetect_gpio = <&pio 60 0>;
+};

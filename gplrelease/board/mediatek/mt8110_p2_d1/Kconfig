@@ -1,0 +1,14 @@
+if TARGET_MT8110_P2_D1
+
+config SYS_BOARD
+	default "mt8110_p2_d1"
+
+config SYS_CONFIG_NAME
+	default "mt8110_p2_d1"
+
+
+config MTK_BROM_HEADER_INFO
+	string
+	default "media=nor"
+
+endif

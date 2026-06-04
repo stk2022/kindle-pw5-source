@@ -1,0 +1,122 @@
+/*
+ * Copyright (c) 2019 MediaTek Inc.
+ *
+ * SPDX-License-Identifier: (GPL-2.0 OR MIT)
+ */
+
+&bd71828 {
+	gpio-controller;
+	#gpio-cells = <2>;
+	ngpios = <3>;
+	gpio-line-names = "DVFS0","EPDEN","DVFS1";
+	rohm,charger-sense-resistor = <30000000>;
+	rohm,dvs-vsel-gpios = <&pio 59 0>,
+			      <&pio 60 0>;
+
+	system-power-controller;
+
+	regulators {
+		bd71828_buck_vproc: BUCK1 {
+			regulator-name = "buck_vproc";
+			regulator-min-microvolt = <500000>;
+			regulator-max-microvolt = <2000000>;
+			regulator-ramp-delay = <20000>;
+			/* rohm,dvs-runlvl-ctrl; */
+			rohm,dvs-runlevel0-voltage = <800000>;
+			rohm,dvs-runlevel1-voltage = <812500>;
+			rohm,dvs-runlevel2-voltage = <825000>;
+			rohm,dvs-runlevel3-voltage = <837500>;
+			regulator-always-on;
+		};
+		bd71828_buck_vcore: BUCK2 {
+			regulator-name = "buck_vcore";
+			regulator-min-microvolt = <500000>;
+			regulator-max-microvolt = <2000000>;
+			rohm,dvs-runlvl-ctrl;
+			rohm,dvs-runlevel0-voltage = <650000>;
+			rohm,dvs-runlevel1-voltage = <700000>;
+			rohm,dvs-runlevel2-voltage = <700000>;
+			rohm,dvs-runlevel3-voltage = <700000>;
+			regulator-always-on;
+		};
+		bd71828_buck_vio18: BUCK3 {
+			regulator-name = "buck_vio18";
+			regulator-min-microvolt = <1200000>;
+			regulator-max-microvolt = <2000000>;
+			regulator-always-on;
+		};
+		bd71828_buck_avdd11: BUCK4 {
+			regulator-name = "buck_avdd11";
+			regulator-min-microvolt = <1000000>;
+			regulator-max-microvolt = <1800000>;
+			regulator-always-on;
+		};
+		bd71828_buck_vio33: BUCK5 {
+			regulator-name = "buck_vio33";
+			regulator-min-microvolt = <2500000>;
+			regulator-max-microvolt = <3300000>;
+			regulator-always-on;
+		};
+		bd71828_buck_vsram_proc: BUCK6 {
+			regulator-name = "buck_vsram_proc";
+			regulator-min-microvolt = <500000>;
+			regulator-max-microvolt = <2000000>;
+			regulator-ramp-delay = <20000>;
+			/* rohm,dvs-runlvl-ctrl; */
+			rohm,dvs-runlevel0-voltage = <900000>;
+			rohm,dvs-runlevel1-voltage = <912500>;
+			rohm,dvs-runlevel2-voltage = <925000>;
+			rohm,dvs-runlevel3-voltage = <937500>;
+			regulator-always-on;
+		};
+		bd71828_buck_vsram_core: BUCK7 {
+			regulator-name = "buck_vsram_core";
+			regulator-min-microvolt = <500000>;
+			regulator-max-microvolt = <2000000>;
+			rohm,dvs-runlvl-ctrl;
+			rohm,dvs-runlevel0-voltage = <800000>;
+			rohm,dvs-runlevel1-voltage = <800000>;
+			rohm,dvs-runlevel2-voltage = <800000>;
+			rohm,dvs-runlevel3-voltage = <800000>;
+			regulator-always-on;
+		};
+		bd71828_ldo_avdd33: LDO1 {
+			regulator-name = "ldo_avdd33";
+			regulator-min-microvolt = <800000>;
+			regulator-max-microvolt = <3300000>;
+			regulator-always-on;
+		};
+		bd71828_ldo_avcc_touch: LDO2 {
+			regulator-name = "ldo_avcc_touch";
+			regulator-min-microvolt = <800000>;
+			regulator-max-microvolt = <3300000>;
+		};
+		bd71828_ldo_dvdd18: LDO3 {
+			regulator-name = "ldo_dvdd18";
+			regulator-min-microvolt = <800000>;
+			regulator-max-microvolt = <3300000>;
+			regulator-always-on;
+		};
+		bd71828_ldo_dvcc_epd: LDO4 {
+			regulator-name = "ldo_dvcc_epd";
+			regulator-min-microvolt = <800000>;
+			regulator-max-microvolt = <3300000>;
+		};
+		bd71828_ldo_avdd12: LDO5 {
+			regulator-name = "ldo_avdd12";
+			regulator-min-microvolt = <800000>;
+			regulator-max-microvolt = <3300000>;
+			regulator-always-on;
+		};
+		bd71828_ldo_dvcc_touch: LDO6 {
+			regulator-name = "ldo_dvcc_touch";
+			regulator-min-microvolt = <1800000>;
+			regulator-max-microvolt = <1800000>;
+		};
+		bd71828_ldo_vosnvs: LDO7 {
+			regulator-name = "ldo_vosnvs";
+			regulator-min-microvolt = <800000>;
+			regulator-max-microvolt = <3300000>;
+		};
+	};
+};

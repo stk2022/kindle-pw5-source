@@ -1,0 +1,14 @@
+if TARGET_MALBEC
+
+config SYS_BOARD
+	default "malbec8113"
+
+config SYS_CONFIG_NAME
+	default "malbec8113"
+
+
+config MTK_BROM_HEADER_INFO
+	string
+	default "media=nor"
+
+endif

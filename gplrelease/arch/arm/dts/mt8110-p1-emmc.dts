@@ -1,0 +1,160 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+/*
+ * Copyright (C) 2019 MediaTek Inc.
+ * Author: Mingming Lee <mingming.lee@mediatek.com>
+ *
+ */
+
+/dts-v1/;
+
+#include <config.h>
+#include "mt8512.dtsi"
+
+/ {
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+	model = "MT8110 P1 EMMC";
+
+	compatible = "mediatek,mt8110", "mediatek,mt8512";
+
+	chosen {
+		stdout-path = &uart0;
+		tick-timer = &timer0;
+	};
+
+	memory@40000000 {
+		device_type = "memory";
+		reg = <0x40000000 0x20000000>;
+	};
+
+	reg_1p8v: regulator-1p8v {
+		compatible = "regulator-fixed";
+		regulator-name = "fixed-1.8V";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		regulator-boot-on;
+		regulator-always-on;
+	};
+
+	reg_3p3v: regulator-3p3v {
+		compatible = "regulator-fixed";
+		regulator-name = "fixed-3.3V";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-boot-on;
+		regulator-always-on;
+	};
+};
+
+&adc {
+	status = "okay";
+};
+
+&mmc0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&mmc0_pins_default>;
+	bus-width = <8>;
+	max-frequency = <200000000>;
+	cap-mmc-highspeed;
+	mmc-hs200-1_8v;
+	cap-mmc-hw-reset;
+	vmmc-supply = <&reg_3p3v>;
+	vqmmc-supply = <&reg_1p8v>;
+	non-removable;
+	status = "okay";
+};
+
+&i2c0 {
+	status = "okay";
+};
+
+&i2c1 {
+	status = "okay";
+	bd71828: bd71828@4b {
+		compatible = "rohm,bd71828";
+		reg = <0x4b>;
+		status = "okay";
+	};
+
+	bd71828h: bd71828@4d {
+		compatible = "rohm,bd71828h";
+		reg = <0x4d>;
+		status = "okay";
+	};
+};
+
+&i2c2 {
+	status = "okay";
+};
+
+&pinctrl {
+	pinctrl-names = "default";
+	pinctrl-0 = <&unused_pins_default>;
+	unused_pins_default: unuseddefault {
+		mux {
+			function = "unused0";
+			groups =  "unused0";
+			input-disable;
+			bias-disable;
+		};
+	};
+
+	mmc0_pins_default: mmc0default {
+		mux {
+			function = "msdc";
+			groups =  "msdc0";
+		};
+
+		conf-cmd-data {
+			pins = "MSDC0_CMD", "MSDC0_DAT0", "MSDC0_DAT1",
+			       "MSDC0_DAT2", "MSDC0_DAT3", "MSDC0_DAT4",
+			       "MSDC0_DAT5", "MSDC0_DAT6", "MSDC0_DAT7";
+			input-enable;
+			drive-strength = <6>;
+			bias-pull-up;
+		};
+
+		conf-clk {
+			pins = "MSDC0_CLK";
+			drive-strength = <6>;
+			bias-pull-down;
+		};
+
+		conf-rst {
+			pins = "MSDC0_RSTB";
+			bias-pull-up;
+		};
+	};
+
+		uart0_pins: uart0 {
+			mux {
+				function = "uart";
+				groups = "uart0_0_rxd_txd";
+			};
+		};
+};
+
+&ssusb {
+	dr_mode = "peripheral";
+	maximum-speed = "high-speed";
+	status = "okay";
+};
+
+&thermal {
+        status = "okay";
+};
+
+&u3phy {
+	status = "okay";
+};
+
+&uart0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart0_pins>;
+	status = "okay";
+};
+
+&watchdog0 {
+	status = "okay";
+};

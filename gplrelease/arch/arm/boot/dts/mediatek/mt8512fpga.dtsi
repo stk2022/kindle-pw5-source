@@ -1,0 +1,124 @@
+/*
+ * Copyright (c) 2019 MediaTek Inc.
+ *
+ * SPDX-License-Identifier: (GPL-2.0 OR MIT)
+ */
+
+#include "mt8512.dtsi"
+
+/ {
+	compatible = "mediatek,mt8512";
+
+	cluster0_opp: opp_table0 {
+		compatible = "operating-points-v2";
+		opp-shared;
+		opp00 {
+			opp-hz = /bits/ 64 <600000000>;
+			opp-microvolt = <800000>;
+		};
+		opp01 {
+			opp-hz = /bits/ 64 <666000000>;
+			opp-microvolt = <800000>;
+		};
+		opp02 {
+			opp-hz = /bits/ 64 <733000000>;
+			opp-microvolt = <800000>;
+		};
+		opp03 {
+			opp-hz = /bits/ 64 <833000000>;
+			opp-microvolt = <800000>;
+		};
+		opp04 {
+			opp-hz = /bits/ 64 <966000000>;
+			opp-microvolt = <800000>;
+		};
+		opp05 {
+			opp-hz = /bits/ 64 <1133000000>;
+			opp-microvolt = <800000>;
+		};
+		opp06 {
+			opp-hz = /bits/ 64 <1266000000>;
+			opp-microvolt = <800000>;
+		};
+		opp07 {
+			opp-hz = /bits/ 64 <1400000000>;
+			opp-microvolt = <800000>;
+		};
+		opp08 {
+			opp-hz = /bits/ 64 <1467000000>;
+			opp-microvolt = <825000>;
+		};
+		opp09 {
+			opp-hz = /bits/ 64 <1534000000>;
+			opp-microvolt = <850000>;
+		};
+		opp10 {
+			opp-hz = /bits/ 64 <1618000000>;
+			opp-microvolt = <881250>;
+		};
+		opp11 {
+			opp-hz = /bits/ 64 <1702000000>;
+			opp-microvolt = <912500>;
+		};
+		opp12 {
+			opp-hz = /bits/ 64 <1786000000>;
+			opp-microvolt = <943750>;
+		};
+		opp13 {
+			opp-hz = /bits/ 64 <1870000000>;
+			opp-microvolt = <975000>;
+		};
+		opp14 {
+			opp-hz = /bits/ 64 <1938000000>;
+			opp-microvolt = <1000000>;
+		};
+		opp15 {
+			opp-hz = /bits/ 64 <2000000000>;
+			opp-microvolt = <1025000>;
+		};
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		cpu-map {
+			cluster0 {
+				core0 {
+					cpu = <&cpu0>;
+				};
+			};
+		};
+
+		cpu0: cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a53";
+			reg = <0x0>;
+			operating-points-v2 = <&cluster0_opp>;
+		};
+
+		energy-costs {
+			MT8512_CPU_COST_0: mt8512-core-cost0 {
+				busy-cost-data = <0 0>;
+				idle-cost-data = <0>;
+			};
+			MT8512_CLUSTER_COST_0: mt8512-cluster-cost0 {
+				busy-cost-data = <0 0>;
+				idle-cost-data = <0>;
+			};
+		};
+	};
+
+	u3phy: usb-phy {
+		compatible = "mediatek,fpga-u3phy";
+		mediatek,ippc = <0x11213e00>;
+		#address-cells = <2>;
+		#size-cells = <2>;
+		port0: usb-phy@0 {
+			chip-id= <0xa60810a>;
+			port = <0>;
+			pclk_phase = <23>;
+			#phy-cells = <1>;
+		};
+	};
+};

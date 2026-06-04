@@ -1,0 +1,122 @@
+/*
+ * Copyright (c) 2018 MediaTek Inc.
+ *
+ * SPDX-License-Identifier: (GPL-2.0 OR MIT)
+ */
+
+/dts-v1/;
+#include "mt8518a.dtsi"
+
+/ {
+	model = "MediaTek MT8518 fpga board";
+	compatible = "mediatek,mt8518-fpga", "mediatek,mt8518";
+
+	aliases {
+		serial0 = &uart0;
+	};
+
+	memory@40000000 {
+		device_type = "memory";
+		reg = <0 0x40000000 0 0x20000000>;
+	};
+
+	chosen {
+		bootargs = "console=ttyS0,921600n1 ubi.mtd=8,4096 \
+root=ubi0:aud8518fpga-slc-32b-rootfs rootfstype=ubifs \
+earlycon=uart8250,mmio32,0x11005000 initcall_debug loglevel=8 \
+androidboot.hardware=mt8518 firmware_class.path=/vendor/firmware";
+	};
+
+	mmc_clk: dummy12m@0 {
+		compatible = "fixed-clock";
+		clock-frequency = <12000000>;
+		#clock-cells = <0>;
+	};
+
+	mmc_fixed_3v3: fixedregulator@0 {
+		compatible = "regulator-fixed";
+		regulator-name = "mmc_power";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		enable-active-high;
+		regulator-always-on;
+	};
+
+	mmc_fixed_1v8_io: fixedregulator@1 {
+		compatible = "regulator-fixed";
+		regulator-name = "mmc_io";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		enable-active-high;
+		regulator-always-on;
+	};
+
+	reserved-memory {
+		mtee-reserved-memory {
+			compatible = "mediatek,mt8518-mtee-reserved-memory";
+			no-map;
+			reg = <0 0x5FD00000 0 0x300000>;
+		};
+	};
+
+	sound: sound {
+		compatible = "mediatek,mt8518-evb";
+		mediatek,platform = <&afe>;
+		status = "disabled";
+		/* status = "okay"; */
+	};
+};
+
+&afe {
+	/* status = "okay"; */
+};
+
+&auxadc {
+	status = "okay";
+};
+
+&bch {
+	status = "okay";
+};
+
+&mmc0 {
+	/*
+	pinctrl-names = "default", "state_uhs";
+	pinctrl-0 = <&mmc0_pins_default>;
+	pinctrl-1 = <&mmc0_pins_uhs>;
+	*/
+	status = "disabled";
+	bus-width = <8>;
+	max-frequency = <6000000>;
+	cap-mmc-highspeed;
+	cap-mmc-hw-reset;
+	hs400-ds-delay = <0x14015>;
+	r_smpl = <0>;
+	vmmc-supply = <&mmc_fixed_3v3>;
+	vqmmc-supply = <&mmc_fixed_1v8_io>;
+	clocks = <&mmc_clk>, <&mmc_clk>;
+	clock-names = "source", "hclk";
+	non-removable;
+};
+
+&nandc {
+	status = "okay";
+	nand@0 {
+		reg = <0>;
+		nand-on-flash-bbt;
+		nand-ecc-mode = "hw";
+	};
+};
+
+&pio {
+	pinctrl-names = "default";
+	mmc0_pins_default: mmc0default {
+	};
+
+	mmc0_pins_uhs: mmc0@0{
+	};
+};
+
+&uart0 {
+	status = "okay";
+};
