@@ -15,7 +15,7 @@ jobs:
 
       - name: Download and extract
         run: |
-          wget -q "https://s3.amazonaws.com/kindledownloads/Kindle_src_5.18.2_4434540025.tar.gz"
+          wget -q "https://s3.amazonaws.com/kindledownloads/Kindle_src_5.19.2_4670760040.tar.gz"
           tar xzf Kindle_src_5.18.2_4434540025.tar.gz
           rm Kindle_src_5.18.2_4434540025.tar.gz
           cd gplrelease
