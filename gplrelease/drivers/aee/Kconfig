@@ -1,0 +1,27 @@
+#
+# aee drivers configuration
+#
+
+config MTK_KEDUMP_MINI_SUPPORT
+	bool "Enable mini dump feature"
+	help
+	  Enable minidump feature in uboot, when exception happends in
+	  kernel layer, will dump some information to AEE db.
+
+choice
+        prompt "Flash provider for kedump"
+        depends on MTK_KEDUMP_MINI_SUPPORT
+
+config MTK_KEDUMP_FLASH_MMC
+        bool "kedump on MMC"
+        depends on MMC
+
+config MTK_KEDUMP_FLASH_NAND
+        bool "kedump on NAND"
+        depends on NAND && CMD_MTDPARTS
+
+config MTK_AEE_SAVE_DEBUGINFO_RESERVED_BUFFER
+        bool "kedump platform debuginfo to reserved buffer"
+
+endchoice
+

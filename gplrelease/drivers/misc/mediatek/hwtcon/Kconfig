@@ -1,0 +1,13 @@
+config MTK_HWTCON
+	tristate "build HWTCON driver"
+	help
+	    This HWTCON module is used for drive electronic ink screen show picture.
+		    HWTCON will convert Y4 format input picture to electronic conversion signal,
+		    which will drive ink screen show input picture.
+
+config CUSTOM_KERNEL_EDP
+	string "define mediatek kernel EDP driver"
+	help
+	  To choose kernel EDP driver name.
+	  This config is to select which EDP driver you want to use.
+

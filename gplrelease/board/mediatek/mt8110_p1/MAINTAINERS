@@ -1,0 +1,6 @@
+MT8110_P1
+M:	Mingming lee <mingming.lee@mediatek.com>
+S:	Maintained
+F:	board/mediatek/mt8110_p1
+F:	include/configs/mt8110_p1.h
+F:	configs/mt8110_p1_defconfig

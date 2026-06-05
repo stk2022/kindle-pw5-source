@@ -1,0 +1,251 @@
+/*
+ * Copyright (C) 2015 MediaTek Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ */
+
+#include <linux/soc/mediatek/mtk-cmdq.h>
+#include "cmdq_device.h"
+
+#define DECLAR_EVENT(event_enum, dts_name) \
+	{event_enum, #event_enum, #dts_name},
+
+static struct cmdq_event_table cmdq_events[] = {
+	/* MDP start frame */
+	DECLAR_EVENT(CMDQ_EVENT_DPI0_SOF, dpi0_sof)
+	DECLAR_EVENT(CMDQ_EVENT_MAIN_SOF, main_sof)
+	DECLAR_EVENT(CMDQ_EVENT_PIPELINE_SOF, pipeline_sof)
+	DECLAR_EVENT(CMDQ_EVENT_WB_WDMA_SOF, wb_wdma_sof)
+	DECLAR_EVENT(CMDQ_EVENT_WF_LUT_SOF, wf_lut_sof)
+	DECLAR_EVENT(CMDQ_EVENT_LUT_MERGE_SOF, lut_merge_sof)
+	DECLAR_EVENT(CMDQ_EVENT_WF_LUT_DISP_RDMA_SOF, wf_lut_disp_rdma_sof)
+	DECLAR_EVENT(CMDQ_EVENT_DPI0_FRAME_DONE, dpi0_frame_done)
+	DECLAR_EVENT(CMDQ_EVENT_LUT_ASSIGN_DONE, lut_assign_done)
+	DECLAR_EVENT(CMDQ_EVENT_PIPELINE_DONE, pipeline_done)
+	DECLAR_EVENT(CMDQ_EVENT_WB_WDMA_DONE, wb_wdma_done)
+	DECLAR_EVENT(CMDQ_EVENT_WF_LUT_FRAME_DONE, wf_lut_frame_done)
+	DECLAR_EVENT(CMDQ_EVENT_LUT_FRAME_DONE, lut_frame_done)
+	DECLAR_EVENT(CMDQ_EVENT_DISP_RDMA0_FRAME_DONE, disp_rdma0_frame_done)
+	DECLAR_EVENT(CMDQ_EVENT_LUT_COL_EVENT, lut_col_event)
+	DECLAR_EVENT(CMDQ_EVENT_DPI_UPDATE_DONE, dpi_update_done)
+	DECLAR_EVENT(CMDQ_EVENT_LUT_RELEASE_DONE, lut_release_done)
+	DECLAR_EVENT(CMDQ_EVENT_TCON_END, tcon_end)
+	DECLAR_EVENT(CMDQ_EVENT_MDP_RDMA0_SOF, mdp_rdma0_sof)
+	DECLAR_EVENT(CMDQ_EVENT_MDP_RSZ0_SOF, mdp_rsz0_sof)
+	DECLAR_EVENT(CMDQ_EVENT_MDP_TDSHP0_SOF, mdp_tdshp0_sof)
+	DECLAR_EVENT(CMDQ_EVENT_MDP_WROT0_SOF, mdp_wrot0_sof)
+	DECLAR_EVENT(CMDQ_EVENT_MDP_GAMMA0_SOF, mdp_gamma0_sof)
+	DECLAR_EVENT(CMDQ_EVENT_MDP_DITHER0_SOF, mdp_dither0_sof)
+	DECLAR_EVENT(CMDQ_EVENT_DISP_OVL0_2L_SOF, disp_ovl0_2l_sof)
+	DECLAR_EVENT(CMDQ_EVENT_DISP_WDMA0_SOF, disp_wdma0_sof)
+	DECLAR_EVENT(CMDQ_EVENT_MDP_RDMA0_FRAME_DONE, mdp_rdma0_frame_done)
+	DECLAR_EVENT(CMDQ_EVENT_MDP_RSZ0_FRAME_DONE, mdp_rsz0_frame_done)
+	DECLAR_EVENT(CMDQ_EVENT_MDP_TDSHP0_FRAME_DONE, mdp_tdshp0_frame_done)
+	DECLAR_EVENT(CMDQ_EVENT_MDP_WROT0_WRITE_DONE, mdp_wrot0_write_done)
+	DECLAR_EVENT(CMDQ_EVENT_MDP_GAMMA0_FRAME_DONE, mdp_gamma0_frame_done)
+	DECLAR_EVENT(CMDQ_EVENT_MDP_DITHER0_FRAME_DONE, mdp_dither0_frame_done)
+	DECLAR_EVENT(CMDQ_EVENT_MDP_OVL0_2L_FRAME_DONE, mdp_ovl0_2l_frame_done)
+	DECLAR_EVENT(CMDQ_EVENT_MDP_WDMA0_FRAME_DONE, mdp_wdma0_frame_done)
+	DECLAR_EVENT(CMDQ_EVENT_JPGDEC_FRAME_DONE, jpgdec_frame_done)
+	DECLAR_EVENT(CMDQ_EVENT_PNG_FRAME_DONE, png_frame_done)
+	DECLAR_EVENT(CMDQ_EVENT_PNG_FRAME_DONE0, png_frame_done0)
+	DECLAR_EVENT(CMDQ_EVENT_PNG_FRAME_DONE1, png_frame_done1)
+	DECLAR_EVENT(CMDQ_EVENT_PNG_FRAME_DONE2, png_frame_done2)
+	DECLAR_EVENT(CMDQ_EVENT_IMGRSZ_FRAME_DONE, imgrsz_frame_done)
+	DECLAR_EVENT(CMDQ_EVENT_JPGDEC_BITS_FRAME_DONE, jpgdec_bits_frame_done)
+	DECLAR_EVENT(CMDQ_EVENT_IMG_RESERVE_FRAME_DONE_0,
+		img_reserve_frame_done_0)
+	DECLAR_EVENT(CMDQ_EVENT_IMG_RESERVE_FRAME_DONE_1,
+		img_reserve_frame_done_1)
+	DECLAR_EVENT(CMDQ_EVENT_IMG_RESERVE_FRAME_DONE_2,
+		img_reserve_frame_done_2)
+	DECLAR_EVENT(CMDQ_EVENT_IMG_RESERVE_FRAME_DONE_3,
+		img_reserve_frame_done_3)
+	DECLAR_EVENT(CMDQ_EVENT_STREAM_DONE_0, stream_done_0)
+	DECLAR_EVENT(CMDQ_EVENT_STREAM_DONE_1, stream_done_1)
+	DECLAR_EVENT(CMDQ_EVENT_STREAM_DONE_2, stream_done_2)
+	DECLAR_EVENT(CMDQ_EVENT_STREAM_DONE_3, stream_done_3)
+	DECLAR_EVENT(CMDQ_EVENT_STREAM_DONE_4, stream_done_4)
+	DECLAR_EVENT(CMDQ_EVENT_STREAM_DONE_5, stream_done_5)
+	DECLAR_EVENT(CMDQ_EVENT_STREAM_DONE_6, stream_done_6)
+	DECLAR_EVENT(CMDQ_EVENT_STREAM_DONE_7, stream_done_7)
+	DECLAR_EVENT(CMDQ_EVENT_STREAM_DONE_8, stream_done_8)
+	DECLAR_EVENT(CMDQ_EVENT_STREAM_DONE_9, stream_done_9)
+	DECLAR_EVENT(CMDQ_EVENT_BUF_UNDERRUN_EVENT_0, buf_underrun_event_0)
+	DECLAR_EVENT(CMDQ_EVENT_BUF_UNDERRUN_EVENT_1, buf_underrun_event_1)
+	DECLAR_EVENT(CMDQ_EVENT_MDP_RDMA0_SW_RST_DONE, mdp_rdma0_sw_rst_done)
+	DECLAR_EVENT(CMDQ_EVENT_MDP_WROT0_SW_RST_DONE, mdp_wrot0_sw_rst_done)
+	DECLAR_EVENT(CMDQ_EVENT_DISP_OVL0_SW_RST_DONE, disp_ovl0_sw_rst_done)
+	DECLAR_EVENT(CMDQ_EVENT_DISP_WDMA0_SW_RST_DONE, disp_wdma0_sw_rst_done)
+
+	/* Keep this at the end of HW events */
+	DECLAR_EVENT(CMDQ_MAX_HW_EVENT_COUNT, hw_event_conunt)
+
+	DECLAR_EVENT(CMDQ_SYNC_HWTCON_WDMA_FRAME_DONE, sw_token)
+
+	/* SW Sync Tokens (Pre-defined) */
+	/* Config thread notify trigger thread */
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_CONFIG_DIRTY, sw_token)
+	/* Trigger thread notify config thread */
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_STREAM_EOF, sw_token)
+	/* Block Trigger thread until the ESD check finishes. */
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_ESD_EOF, sw_token)
+	/* check CABC setup finish */
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_CABC_EOF, sw_token)
+	/* Block Trigger thread until the path freeze finishes */
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_FREEZE_EOF, sw_token)
+	/* Pass-2 notifies VENC frame is ready to be encoded */
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_VENC_INPUT_READY, sw_token)
+	/* VENC notifies Pass-2 encode done so next frame may start */
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_VENC_EOF, sw_token)
+
+	/* Notify normal CMDQ there are some secure task done */
+	DECLAR_EVENT(CMDQ_SYNC_SECURE_THR_EOF, sw_token)
+	/* Lock WSM resource */
+	DECLAR_EVENT(CMDQ_SYNC_SECURE_WSM_LOCK, sw_token)
+
+	/* SW Sync Tokens (User-defined) */
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_USER_0, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_USER_1, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_POLL_MONITOR, sw_token)
+
+	/* SW Sync Tokens (Pre-defined) */
+	/* Config thread notify trigger thread for external display */
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_EXT_CONFIG_DIRTY, sw_token)
+	/* Trigger thread notify config thread */
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_EXT_STREAM_EOF, sw_token)
+	/* Check CABC setup finish */
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_EXT_CABC_EOF, sw_token)
+
+	/* Secure video path notify SW token */
+	DECLAR_EVENT(CMDQ_SYNC_DISP_OVL0_2NONSEC_END, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_DISP_OVL1_2NONSEC_END, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_DISP_2LOVL0_2NONSEC_END, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_DISP_2LOVL1_2NONSEC_END, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_DISP_RDMA0_2NONSEC_END, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_DISP_RDMA1_2NONSEC_END, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_DISP_WDMA0_2NONSEC_END, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_DISP_WDMA1_2NONSEC_END, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_DISP_EXT_STREAM_EOF, sw_token)
+
+	/**
+	 * Event for CMDQ to block executing command when append command
+	 * Plz sync CMDQ_SYNC_TOKEN_APPEND_THR(id) in cmdq_core source file.
+	 */
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR0, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR1, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR2, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR3, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR4, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR5, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR6, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR7, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR8, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR9, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR10, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR11, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR12, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR13, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR14, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR15, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR16, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR17, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR18, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR19, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR20, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR21, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR22, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR23, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR24, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR25, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR26, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR27, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR28, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR29, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR30, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_APPEND_THR31, sw_token)
+
+	/* GPR access tokens (for HW register backup)
+	 * There are 15 32-bit GPR, 3 GPR form a set
+	 * (64-bit for address, 32-bit for value)
+	 */
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_GPR_SET_0, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_GPR_SET_1, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_GPR_SET_2, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_GPR_SET_3, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_GPR_SET_4, sw_token)
+
+	/* Resource lock event to control resource in GCE thread */
+	DECLAR_EVENT(CMDQ_SYNC_RESOURCE_WROT0, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_RESOURCE_WROT1, sw_token)
+
+	/*
+	 * Event for CMDQ delay implement
+	 * Plz sync CMDQ_SYNC_TOKEN_DELAY_THR(id) in cmdq_core source file.
+	 */
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_TIMER, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_DELAY_SET0, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_DELAY_SET1, sw_token)
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_DELAY_SET2, sw_token)
+
+	/* GCE HW TPR Event*/
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_00, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_01, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_02, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_03, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_04, sw_token)
+	/* 5: 1us */
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_05, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_06, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_07, sw_token)
+	/* 8: 10us */
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_08, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_09, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_10, sw_token)
+	/* 11: 100us */
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_11, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_12, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_13, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_14, sw_token)
+	/* 15: 1ms */
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_15, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_16, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_17, sw_token)
+	/* 18: 10ms */
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_18, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_19, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_20, sw_token)
+	/* 21: 100ms */
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_21, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_22, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_23, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_24, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_25, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_26, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_27, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_28, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_29, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_30, sw_token)
+	DECLAR_EVENT(CMDQ_EVENT_TIMER_31, sw_token)
+
+
+	/* event id is 10 bit */
+	DECLAR_EVENT(CMDQ_SYNC_TOKEN_MAX, max_token)
+};
+
+struct cmdq_event_table *cmdq_event_get_table(void)
+{
+	return cmdq_events;
+}
+
+u32 cmdq_event_get_table_size(void)
+{
+	return ARRAY_SIZE(cmdq_events);
+}

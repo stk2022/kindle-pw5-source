@@ -1,0 +1,244 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+/*
+ * Copyright (C) 2019 MediaTek Inc.
+ * Author: Mingming Lee <mingming.lee@mediatek.com>
+ *
+ */
+
+/dts-v1/;
+
+#include <config.h>
+#include "mt8512.dtsi"
+
+/ {
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+	compatible = "mediatek,mt8110", "mediatek,mt8512";
+
+	signature {
+		/delete-node/ key-dev;
+		key-fireos-production {
+			required = "conf";
+			algo = "sha256,rsa2048";
+			rsa,r-squared = <0x27480a0e 0xb79f6bd3 0xd8beb7e5 0x2b8b58e5 0x5e1219f9 0x716a32d3 0xdecc0993 0x594cb665 0xcd1fee46 0x61ceb70f 0x788f9c12 0x8668e29a 0x85075a8c 0x267a0fdd 0x487b6d96 0xe87ce831 0xf2f928b4 0x257fcad6 0x657407a0 0xe03c840a 0x210a963f 0x54e84fe0 0x4be04610 0x78948ce4 0x6667bb14 0x81f3be59 0x70001b34 0x7fde06e 0x336378e0 0x453b5e1 0x1ec1d7b7 0x298443a 0xf7085d98 0x771fdbf0 0xe34ed92d 0x9377fb03 0x18c32ea2 0x3f55b511 0xcfaaebb5 0x174e940 0xb90b25f7 0x2320585a 0xb1f54635 0x296a5367 0x520be543 0xcb740901 0x4fc608b1 0x4c45875b 0x5dc07721 0x92771990 0x551ace7c 0xd2ce67bb 0x238e6e91 0x6a694e0a 0xe0f82439 0x1bdeb638 0x95765a89 0x6f08f1a0 0x7b261a14 0x91910bd2 0x364cd4b5 0x56e9df26 0xe0c70d23 0x11c8ca43>;
+			rsa,modulus = <0x9dcdb4ef 0xa91802c5 0xea785597 0x4c110ee4 0x8fe0f5cf 0xb323e8a 0xf5409e6d 0xf7f9fabc 0x1b8f2ecf 0xa780096 0xdd3026e2 0xf50a24c 0x2c2623c5 0x37ef52c4 0xcb0f91bf 0x159e09fa 0xc17f67d6 0x454c3d13 0x3448cdbc 0xfbae15e4 0x141f6944 0x15193162 0xd649e90d 0x1026e211 0xa98415b9 0xe54ab445 0xc892026c 0x80a4bbec 0x94ef0438 0x7e928e02 0x1ff18481 0x5daf448 0xf6aae7a8 0xf33595cd 0x9985538f 0x81e743a6 0x2f4b249f 0xf1774ff0 0x16a2303f 0x54e14d23 0x99b785f1 0x280ad8a4 0xa5f3c0e4 0x122bb369 0x60284581 0x8a446bf5 0x68cf5193 0x4a34d35 0x5c9f8a6f 0x2869adcf 0x7a234b49 0xf14f2597 0x50cd18a4 0x5da2d4fe 0xfe9df562 0x48952e98 0xa4a50db7 0xf9f70cdb 0x377297fa 0x7b2bb7e5 0x2843f177 0xac22195b 0x6ab5229a 0xa12ee067>;
+			rsa,exponent = <0x0 0x10001>;
+			rsa,n0-inverse = <0xc669c4a9>;
+			rsa,num-bits = <0x800>;
+			key-name-hint = "fireos-production";
+		};
+		key-engineering {
+			required = "conf";
+			algo = "sha256,rsa2048";
+			rsa,r-squared = <0x965fa4dd 0x79f2763d 0x55c21dbb 0x805b07b4 0x8b533e6c 0xdfa84096 0xbd799ee8 0xf65ff995 0xb2081e98 0x35001052 0xc0cb44a7 0x9669011a 0x8cb6cabd 0x5ca95cad 0xa63f3e14 0x181ba130 0x46cb6e44 0xd64b85ce 0x855e1b30 0x5d724a46 0x356e32f0 0x73339086 0xf458c765 0x305c021f 0xd78ee038 0xddca3b22 0x32d4f69f 0x7b152c19 0x987be784 0xcc8e936c 0xf0d64c01 0xe4e31fe 0xa7669de3 0x31825e3b 0xcd894bc6 0xf2fec09a 0x76bdc60f 0x81dab8a 0xd6ae1b68 0xc2795f8a 0xf9099b64 0xa98f6911 0x5fee1f44 0x376600d2 0xe43c3225 0xe07f5cca 0xb1171a0 0xfc87137b 0xd4d6a7ee 0x59225cc2 0x115cf3cd 0x22e6731 0x8a813fb4 0xae622de6 0x382f0e4c 0xaae0da2e 0xa4f10840 0xd311aabb 0x7ea4311 0x77e2bea1 0xb81b82b3 0x3fe173dd 0xba8de76 0x2526b1a2>;
+			rsa,modulus = <0xb323cc7d 0x3156fc5c 0xc6fffade 0xc1d2f102 0xb6636242 0xfe606373 0xc9a38ddc 0x7e44d53a 0x68c95498 0xfb1823f6 0x9aaec38f 0x52a77aa8 0x3aeb9697 0x80028956 0xc7d1e3c2 0x39002975 0xefce368f 0xce8fa27f 0xd69d2692 0xf0f5eb7d 0x3b65291e 0xb1601257 0x72d87932 0x28c1b99b 0xc5b8db56 0xe35ebeaa 0xa0efb979 0xc147b5d 0x7199dcb4 0xc6ec3680 0xaa3e7661 0xdc38629f 0x6f8d6a5d 0x109c5a9 0x9480d1d 0xb5d50b5 0xa5e8da43 0xd8a914d9 0x825d62ca 0xea136073 0x7515339c 0xa924265e 0xe623343b 0x1ab8777f 0x2a8ce6d 0xe341779e 0xd52d6171 0x6dc52e56 0x69bd0e4 0x1a68faa8 0x80493c4d 0x8229a33 0x57615d 0xe27f573d 0x1868db0e 0x57c27622 0x54662d32 0x6cdedb2b 0x4df70d03 0xb229c396 0xcbe569f9 0x11171c0b 0xd1ee666f 0x3038f4db>;
+			rsa,exponent = <0x0 0x10001>;
+			rsa,n0-inverse = <0x260a18ad>;
+			rsa,num-bits = <0x800>;
+			key-name-hint = "engineering";
+		};
+	};
+
+	chosen {
+		stdout-path = &uart0;
+		tick-timer = &timer0;
+	};
+
+	memory@40000000 {
+		device_type = "memory";
+		reg = <0x40000000 0x20000000>;
+	};
+
+	reg_1p8v: regulator-1p8v {
+		compatible = "regulator-fixed";
+		regulator-name = "fixed-1.8V";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		regulator-boot-on;
+		regulator-always-on;
+	};
+
+	reg_3p3v: regulator-3p3v {
+		compatible = "regulator-fixed";
+		regulator-name = "fixed-3.3V";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-boot-on;
+		regulator-always-on;
+	};
+
+	i2c0_gpio: i2c-gpio {
+		compatible = "i2c-gpio";
+		gpios = <&gpio 65 GPIO_ACTIVE_HIGH>,	/* sda */
+				<&gpio 64 GPIO_ACTIVE_HIGH>;	/* scl */
+		i2c-gpio,delay-us = <2>; /* ~100 kHz */
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+};
+
+&adc {
+	status = "okay";
+};
+
+&i2c0 {
+	status = "okay";
+
+	frontlight-fp9966-white {
+		status = "okay";
+		compatible = "fiti,fp9966";
+		reg = <0x34>;
+		enable-gpio = <&gpio 44 GPIO_ACTIVE_HIGH>;
+		adj-gpio = <&gpio 46 GPIO_ACTIVE_HIGH>;
+		index = <1>;
+	};
+
+	frontlight-fp9966-amber {
+		status = "okay";
+		compatible = "fiti,fp9966";
+		reg = <0x34>;
+		enable-gpio = <&gpio 44 GPIO_ACTIVE_HIGH>;
+		adj-gpio = <&gpio 45 GPIO_ACTIVE_HIGH>;
+		index = <0>;
+	};
+
+	frontlight-lm3692x-white {
+		status = "okay";
+		compatible = "ti,lm36922h";
+		reg = <0x37>;
+		enable-gpios = <&gpio 45 GPIO_ACTIVE_HIGH>;
+	};
+
+	frontlight-lm3692x-amber {
+		status = "okay";
+		compatible = "ti,lm36923";
+		reg = <0x36>;
+		enable-gpios = <&gpio 47 GPIO_ACTIVE_HIGH>;
+	};
+};
+
+&i2c1 {
+	status = "okay";
+	bd71828: bd71828@4b {
+		compatible = "rohm,bd71828";
+		reg = <0x4b>;
+		status = "okay";
+	};
+
+	bd71828h: bd71828@4d {
+		compatible = "rohm,bd71828h";
+		reg = <0x4d>;
+		status = "okay";
+	};
+};
+
+&i2c2 {
+	status = "okay";
+
+	frontlight-bellatrix-white {
+		status = "okay";
+		compatible = "ti,lm36922h";
+		reg = <0x37>;
+		enable-gpios = <&gpio 32 GPIO_ACTIVE_HIGH>;
+	};
+
+	frontlight-bellatrix-amber {
+		status = "okay";
+		compatible = "ti,lm36923";
+		reg = <0x36>;
+		enable-gpios = <&gpio 115 GPIO_ACTIVE_HIGH>;
+	};
+};
+
+&i2c0_gpio {
+	status = "okay";
+
+	frontlight-malbec-proto-white {
+		status = "okay";
+		compatible = "ti,lm36922h";
+		reg = <0x37>;
+		enable-gpios = <&gpio 45 GPIO_ACTIVE_HIGH>;
+	};
+
+	frontlight-malbec-proto-amber {
+		status = "okay";
+		compatible = "ti,lm36923";
+		reg = <0x36>;
+		enable-gpios = <&gpio 47 GPIO_ACTIVE_HIGH>;
+	};
+};
+
+&mmc0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&mmc0_pins_default>;
+	bus-width = <8>;
+	max-frequency = <200000000>;
+	cap-mmc-highspeed;
+	mmc-hs200-1_8v;
+	cap-mmc-hw-reset;
+	vmmc-supply = <&reg_3p3v>;
+	vqmmc-supply = <&reg_1p8v>;
+	non-removable;
+	status = "okay";
+};
+
+&pinctrl {
+	mmc0_pins_default: mmc0default {
+		mux {
+			function = "msdc";
+			groups =  "msdc0";
+		};
+
+		conf-cmd-data {
+			pins = "MSDC0_CMD", "MSDC0_DAT0", "MSDC0_DAT1",
+			       "MSDC0_DAT2", "MSDC0_DAT3", "MSDC0_DAT4",
+			       "MSDC0_DAT5", "MSDC0_DAT6", "MSDC0_DAT7";
+			input-enable;
+			drive-strength = <8>;
+			bias-pull-up;
+		};
+
+		conf-clk {
+			pins = "MSDC0_CLK";
+			drive-strength = <8>;
+			bias-pull-down;
+		};
+
+		conf-rst {
+			pins = "MSDC0_RSTB";
+			bias-pull-up;
+		};
+	};
+
+		uart0_pins: uart0 {
+			mux {
+				function = "uart";
+				groups = "uart0_0_rxd_txd";
+			};
+		};
+};
+
+&ssusb {
+	dr_mode = "peripheral";
+	maximum-speed = "high-speed";
+	status = "okay";
+};
+
+&thermal {
+	status = "okay";
+};
+
+&u3phy {
+	status = "okay";
+};
+
+&uart0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart0_pins>;
+	status = "okay";
+};
+
+&watchdog0 {
+	status = "okay";
+};

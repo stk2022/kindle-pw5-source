@@ -1,0 +1,730 @@
+/*
+ * Copyright (c) 2019 MediaTek Inc.
+ *
+ * SPDX-License-Identifier: (GPL-2.0 OR MIT)
+ */
+
+/dts-v1/;
+#include "mt8512a.dtsi"
+
+/ {
+	model = "MediaTek MT8512 FPGA board";
+	compatible = "mediatek,mt8512fpga", "mediatek,mt8512";
+
+	aliases {
+		serial0 = &uart0;
+	};
+
+	memory@40000000 {
+		device_type = "memory";
+		reg = <0 0x40000000 0 0x4000000>;
+	};
+
+	chosen {
+		bootargs = "console=ttyS0,921600n1 \
+		ubi.mtd=9,4096 \
+		root=ubi0:aud8512ap1v1-linux-slc-rootfs \
+		rootfstype=ubifs \
+		initrd=0x51000000,0x91EA22 earlycon=uart8250,mmio32,0x11002000 \
+		initcall_debug loglevel=8 androidboot.hardware=mt8512 \
+		firmware_class.path=/vendor/firmware";
+	};
+
+	gpio_keys: gpio-keys {
+		compatible = "gpio-keys";
+		pinctrl-names = "default";
+		pinctrl-0 = <&blth_key>;
+		status = "okay";
+
+		button@0 {
+			debounce_interval = <50>;
+			gpios = <&pio 40 1>;
+			label = "mute";
+			linux,input-type = <0x1>;
+			linux,code = <248>;
+		};
+
+		button@2 {
+			debounce_interval = <50>;
+			gpios = <&pio 42 1>;
+			label = "volumeup";
+			linux,input-type = <0x1>;
+			linux,code = <115>;
+		};
+
+		button@3 {
+			debounce_interval = <50>;
+			gpios = <&pio 43 1>;
+			label = "volumedown";
+			linux,input-type = <0x1>;
+			linux,code = <114>;
+		};
+	};
+
+	mt8512_audio_codec: mt8512_audio_codec {
+		compatible = "mediatek,mt8512-codec";
+		mediatek,afe-regmap = <&afe>;
+		mediatek,apmixedsys-regmap = <&apmixedsys>;
+		mediatek,downlink-nle-support = <1>;
+		clocks = <&topckgen CLK_TOP_AUD_INTBUS_SEL>;
+		clock-names = "bus";
+		io-channels = <&auxadc 5>;
+		io-channel-names = "adc-ch5";
+	};
+
+	reserved-memory {
+		optee-reserved-memory@43030000 {
+			compatible = "mediatek,mt8512-optee-reserved-memory";
+			no-map;
+			reg = <0 0x43030000 0 0x3d0000>;
+		};
+		optee-shared-memory@43400000 {
+			compatible = "mediatek,mt8512-optee-shared-memory";
+			no-map;
+			reg = <0 0x43400000 0 0x100000>;
+		};
+	};
+	sound: sound {
+		compatible = "mediatek,mt8512-evb";
+		mediatek,platform = <&afe>;
+		mediatek,adsp-platform = <&adsp_pcm>;
+		mediatek,int-adda-audio-codec=<&mt8512_audio_codec>;
+		mediatek,int-adda-codec-dai-name="mt8512-codec-dai";
+		pinctrl-names = "default",
+				"ext_spk_amp_on",
+				"ext_spk_amp_off";
+		pinctrl-0 = <&aud_pins_default>;
+		pinctrl-1 = <&aud_pins_extspkamp_on>;
+		pinctrl-2 = <&aud_pins_extspkamp_off>;
+		status = "okay";
+	};
+
+	tboard_thermistor: thermal-sensor {
+		compatible = "generic-adc-thermal";
+		#thermal-sensor-cells = <0>;
+		io-channels = <&auxadc 0>;
+		io-channel-names = "sensor-channel";
+	};
+
+	firmware {
+		optee {
+			compatible = "linaro,optee-tz";
+			method = "smc";
+		};
+	};
+};
+
+&afe {
+	status = "okay";
+};
+
+&adsp_pcm {
+	mediatek,dsp-boot-run = <0>;
+	mediatek,ul9-mem-type = <2>;
+	status = "okay";
+};
+
+&auxadc {
+	status = "okay";
+};
+
+&consys {
+	pinctrl-names = "default";
+	pinctrl-0 = <&consys_pins_default>;
+	status = "okay";
+};
+
+&cpu0 {
+	proc-supply = <&mt6395_vproc>;
+};
+
+&cpu1 {
+	proc-supply = <&mt6395_vproc>;
+};
+
+&i2c0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c0_pins_default>;
+	status = "okay";
+
+	is31fl3729: led-controller@34 {
+		compatible = "issi,is31fl3729";
+		reg = <0x34>;
+		gpio_en = <&pio 4 0>;
+		gpio_sda = <&pio 6 2>;
+		gpio_scl = <&pio 7 2>;
+
+		led@1 {
+			reg = <1>;
+			label = "led1";
+		};
+		led@2 {
+			reg = <2>;
+			label = "led2";
+		};
+		led@3 {
+			reg = <3>;
+			label = "led3";
+		};
+		led@4 {
+			reg = <4>;
+			label = "led4";
+		};
+		led@5 {
+			reg = <5>;
+			label = "led5";
+		};
+		led@6 {
+			reg = <6>;
+			label = "led6";
+		};
+		led@7 {
+			reg = <7>;
+			label = "led7";
+		};
+		led@8 {
+			reg = <8>;
+			label = "led8";
+		};
+		led@9 {
+			reg = <9>;
+			label = "led9";
+		};
+		led@10 {
+			reg = <10>;
+			label = "led10";
+		};
+		led@11 {
+			reg = <11>;
+			label = "led11";
+		};
+		led@12 {
+			reg = <12>;
+			label = "led12";
+		};
+		led@13 {
+			reg = <13>;
+			label = "led13";
+		};
+		led@14 {
+			reg = <14>;
+			label = "led14";
+		};
+		led@17 {
+			reg = <17>;
+			label = "led17";
+		};
+		led@18 {
+			reg = <18>;
+			label = "led18";
+		};
+		led@19 {
+			reg = <19>;
+			label = "led19";
+		};
+		led@20 {
+			reg = <20>;
+			label = "led20";
+		};
+		led@21 {
+			reg = <21>;
+			label = "led21";
+		};
+		led@22 {
+			reg = <22>;
+			label = "led22";
+		};
+		led@23 {
+			reg = <23>;
+			label = "led23";
+		};
+		led@24 {
+			reg = <24>;
+			label = "led24";
+		};
+		led@25 {
+			reg = <25>;
+			label = "led25";
+		};
+		led@26 {
+			reg = <26>;
+			label = "led26";
+		};
+		led@27 {
+			reg = <27>;
+			label = "led27";
+		};
+		led@28 {
+			reg = <28>;
+			label = "led28";
+		};
+		led@29 {
+			reg = <29>;
+			label = "led29";
+		};
+		led@30 {
+			reg = <30>;
+			label = "led30";
+		};
+		led@33 {
+			reg = <33>;
+			label = "led33";
+		};
+		led@34 {
+			reg = <34>;
+			label = "led34";
+		};
+		led@35 {
+			reg = <35>;
+			label = "led35";
+		};
+		led@36 {
+			reg = <36>;
+			label = "led36";
+		};
+		led@37 {
+			reg = <37>;
+			label = "led37";
+		};
+		led@38 {
+			reg = <38>;
+			label = "led38";
+		};
+		led@39 {
+			reg = <39>;
+			label = "led39";
+		};
+		led@40 {
+			reg = <40>;
+			label = "led40";
+		};
+		led@41 {
+			reg = <41>;
+			label = "led41";
+		};
+		led@42 {
+			reg = <42>;
+			label = "led42";
+		};
+		led@43 {
+			reg = <43>;
+			label = "led43";
+		};
+		led@44 {
+			reg = <44>;
+			label = "led44";
+		};
+		led@45 {
+			reg = <45>;
+			label = "led45";
+		};
+		led@46 {
+			reg = <46>;
+			label = "led46";
+		};
+		led@49 {
+			reg = <49>;
+			label = "led49";
+		};
+		led@50 {
+			reg = <50>;
+			label = "led50";
+		};
+		led@51 {
+			reg = <51>;
+			label = "led51";
+		};
+		led@52 {
+			reg = <52>;
+			label = "led52";
+		};
+		led@53 {
+			reg = <53>;
+			label = "led53";
+		};
+		led@54 {
+			reg = <54>;
+			label = "led54";
+		};
+		led@55 {
+			reg = <55>;
+			label = "led55";
+		};
+		led@56 {
+			reg = <56>;
+			label = "led56";
+		};
+		led@57 {
+			reg = <57>;
+			label = "led57";
+		};
+		led@58 {
+			reg = <58>;
+			label = "led58";
+		};
+		led@59 {
+			reg = <59>;
+			label = "led59";
+		};
+		led@60 {
+			reg = <60>;
+			label = "led60";
+		};
+		led@61 {
+			reg = <61>;
+			label = "led61";
+		};
+		led@62 {
+			reg = <62>;
+			label = "led62";
+		};
+		led@65 {
+			reg = <65>;
+			label = "led65";
+		};
+		led@66 {
+			reg = <66>;
+			label = "led66";
+		};
+		led@67 {
+			reg = <67>;
+			label = "led67";
+		};
+		led@68 {
+			reg = <68>;
+			label = "led68";
+		};
+		led@69 {
+			reg = <69>;
+			label = "led69";
+		};
+		led@70 {
+			reg = <70>;
+			label = "led70";
+		};
+		led@71 {
+			reg = <71>;
+			label = "led71";
+		};
+		led@72 {
+			reg = <72>;
+			label = "led72";
+		};
+		led@73 {
+			reg = <73>;
+			label = "led73";
+		};
+		led@74 {
+			reg = <74>;
+			label = "led74";
+		};
+		led@75 {
+			reg = <75>;
+			label = "led75";
+		};
+		led@76 {
+			reg = <76>;
+			label = "led76";
+		};
+		led@77 {
+			reg = <77>;
+			label = "led77";
+		};
+		led@78 {
+			reg = <78>;
+			label = "led78";
+		};
+		led@81 {
+			reg = <81>;
+			label = "led81";
+		};
+		led@82 {
+			reg = <82>;
+			label = "led82";
+		};
+		led@83 {
+			reg = <83>;
+			label = "led83";
+		};
+		led@84 {
+			reg = <84>;
+			label = "led84";
+		};
+		led@85 {
+			reg = <85>;
+			label = "led85";
+		};
+		led@86 {
+			reg = <86>;
+			label = "led86";
+		};
+		led@87 {
+			reg = <87>;
+			label = "led87";
+		};
+		led@88 {
+			reg = <88>;
+			label = "led88";
+		};
+		led@89 {
+			reg = <89>;
+			label = "led89";
+		};
+		led@90 {
+			reg = <90>;
+			label = "led90";
+		};
+		led@91 {
+			reg = <91>;
+			label = "led91";
+		};
+		led@92 {
+			reg = <92>;
+			label = "led92";
+		};
+		led@93 {
+			reg = <93>;
+			label = "led93";
+		};
+		led@94 {
+			reg = <94>;
+			label = "led94";
+		};
+		led@95 {
+			reg = <95>;
+			label = "led95";
+		};
+	};
+};
+
+&i2c1 {
+	status = "okay";
+	clock-frequency = <1000000>;
+
+	mt6395: mt6395@62 {
+		compatible = "mediatek,mt6395-regulator";
+		mt6395,irq-gpios = <&pio 62 0x0>;
+		reg = <0x62>;
+		status = "okay";
+	};
+};
+
+&i2c2 {
+	status = "okay";
+};
+
+&irrx {
+	pinctrl-names = "default";
+	pinctrl-0 = <&irrx_pins_ir_input>;
+	status = "okay";
+};
+
+&irtx_pwm {
+	pinctrl-names = "irtx_gpio_led_default", "irtx_gpio_led_set";
+	pinctrl-0 = <&irtx_gpio_led_default>;
+	pinctrl-1 = <&irtx_gpio_led_set>;
+	status = "okay";
+};
+
+&keypad {
+	status = "okay";
+	mediatek,kpd-key-debounce = <1024>;
+	mediatek,kpd-sw-pwrkey = <116>;
+	mediatek,kpd-hw-pwrkey = <1>;
+	mediatek,kpd-sw-rstkey  = <0>;
+	mediatek,kpd-hw-rstkey = <3>;
+	mediatek,kpd-use-extend-type = <0>;
+	/*HW Keycode [0~3] -> Linux Keycode*/
+	mediatek,kpd-hw-map-num = <72>;
+	mediatek,kpd-hw-init-map =
+			<0 0 0 0 0 0 0 0 0 0 0 0 0
+			 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+			 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+			 0 0 0 0 0 0 0 0 0 0 0 >;
+	mediatek,kpd-pwrkey-eint-gpio = <0>;
+	mediatek,kpd-pwkey-gpio-din  = <0>;
+	mediatek,kpd-hw-dl-key0 = <0>;
+	mediatek,kpd-hw-dl-key1 = <3>;
+	mediatek,kpd-hw-dl-key2 = <1>;
+	mediatek,kpd-hw-recovery-key = <0>;
+	mediatek,kpd-hw-factory-key  = <3>;
+};
+
+&nandc {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&nandc_pins_default>;
+};
+
+&spi {
+	pinctrl-names = "default";
+	pinctrl-0 = <&spi_pins>;
+	status = "disable";
+
+	spidev: spi@0 {
+			compatible = "mediatek,spi-mt65xx-test";
+			reg = <0>;
+			spi-max-frequency = <10000000>;
+	};
+};
+
+&spis {
+	pinctrl-names = "default";
+	pinctrl-0 = <&spis_pins>;
+	status = "disable";
+
+	slave {
+		compatible = "spi-slave-mt27xx-test";
+	};
+};
+
+&pio {
+	pinctrl-names = "default";
+
+	consys_pins_default: consys_default {
+	};
+
+	aud_pins_default: audiodefault {
+		pins_cmd_dat {
+			pinmux = <MT8512_PIN_101_DMIC0_DAT1__FUNC_TDMIN_DI>,
+				 <MT8512_PIN_102_DMIC1_CLK__FUNC_TDMIN_MCLK>,
+				 <MT8512_PIN_103_DMIC1_DAT0__FUNC_TDMIN_BCK>,
+				 <MT8512_PIN_104_DMIC1_DAT1__FUNC_TDMIN_LRCK>,
+				 <MT8512_PIN_3_GPIO3__FUNC_GPIO3>;
+		};
+	};
+
+	aud_pins_extspkamp_on: audspkampon {
+		pins_cmd_dat {
+			pinmux = <MT8512_PIN_3_GPIO3__FUNC_GPIO3>;
+			output-high;
+		};
+	};
+
+	aud_pins_extspkamp_off: audspkampoff {
+		pins_cmd_dat {
+			pinmux = <MT8512_PIN_3_GPIO3__FUNC_GPIO3>;
+			output-low;
+		};
+	};
+
+	blth_key: eint60default {
+		pins_cmd_dat {
+			pinmux = <MT8512_PIN_40_KPROW0__FUNC_GPIO40>,
+				<MT8512_PIN_42_KPCOL0__FUNC_GPIO42>,
+				<MT8512_PIN_43_KPCOL1__FUNC_GPIO43>;
+			slew-rate = <0>;
+			bias-pull-up = <MTK_PUPD_SET_R1R0_01>;
+			input-enable;
+		};
+	};
+
+	irrx_pins_ir_input: irrx_pin_ir {
+		pins_cmd_dat {
+			pinmux = <MT8512_PIN_87_SPDIF__FUNC_IRRX>;
+			bias-pull-up = <MTK_PUPD_SET_R1R0_00>;
+		};
+	};
+
+	irtx_gpio_led_default:irtx_gpio_led_def@gpio46 {
+		pins_cmd_dat {
+			pinmux = <MT8512_PIN_46_PWM2__FUNC_GPIO46>;
+			slew-rate = <1>;
+			bias-disable;
+			output-low;
+			input-schmitt-enable = <0>;
+		};
+	};
+
+	irtx_gpio_led_set:irtx_gpio_led_set@gpio46 {
+		pins_cmd_dat {
+			pinmux = <MT8512_PIN_46_PWM2__FUNC_PWM_2>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+
+	i2c0_pins_default: i2c0 {
+		pins_cmd_dat {
+			pinmux = <MT8512_PIN_6_GPIO6__FUNC_SDA0_0>,
+				 <MT8512_PIN_7_GPIO7__FUNC_SCL0_0>;
+		};
+	};
+
+	nandc_pins_default: nandcdefault {
+		pins0 {
+			pinmux = <MT8512_PIN_76_MSDC0_DAT7__FUNC_SPI_DAT0_NAND>,
+				 <MT8512_PIN_77_MSDC0_DAT6__FUNC_SPI_DAT1_NAND>,
+				 <MT8512_PIN_78_MSDC0_DAT5__FUNC_SPI_DAT2_NAND>,
+				 <MT8512_PIN_79_MSDC0_DAT4__FUNC_SPI_DAT3_NAND>;
+			input-enable;
+		};
+
+		pins1 {
+			pinmux = <MT8512_PIN_80_MSDC0_RSTB__FUNC_SPI_CSB_NAND>,
+				 <MT8512_PIN_82_MSDC0_CLK__FUNC_SPI_CLK_NAND>;
+			bias-pull-up;
+		};
+	};
+
+	spi_pins: spi{
+		pins_spi{
+			pinmux = <MT8512_PIN_112_SPI_CSB__FUNC_SPI_CSB>,
+				 <MT8512_PIN_113_SPI_CLK__FUNC_SPI_CLK>,
+				 <MT8512_PIN_114_SPI_MISO__FUNC_SPI_MI>,
+				 <MT8512_PIN_115_SPI_MOSI__FUNC_SPI_MO>;
+			bias-disable;
+		};
+	};
+
+	spis_pins: spis@0 {
+		pins_spis {
+			pinmux = <MT8512_PIN_48_JTMS__FUNC_SPIS_CSB>,
+			<MT8512_PIN_49_JTCK__FUNC_SPIS_CLK>,
+			<MT8512_PIN_50_JTDI__FUNC_SPIS_SO>,
+			<MT8512_PIN_51_JTDO__FUNC_SPIS_SI>;
+			bias-disable;
+			input-enable;
+			drive-strength = <MTK_DRIVE_8mA>;
+		};
+	};
+
+	dsp_uart_pin: dsp_uartdefault {
+		pins_rx {
+			pinmux = <MT8512_PIN_56_URTS1__FUNC_DSP_URXD>;
+			input-enable;
+			bias-pull-up;
+		};
+		pins_tx {
+			pinmux = <MT8512_PIN_57_UCTS1__FUNC_DSP_UTXD>;
+		};
+	};
+
+};
+
+&uart0 {
+	status = "okay";
+};
+
+&uart1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&dsp_uart_pin>;
+	status = "okay";
+};
+
+&ssusb {
+	dr_mode = "peripheral";
+	phys = <&u2port0 PHY_TYPE_USB2>;
+	mediatek,force_vbus = "true";
+	status="okay";
+};
+
+&u3phy0 {
+	status = "okay";
+};
+
+&svs_cpu_little {
+	proc-supply = <&mt6395_vproc>;
+};
+
+#include "mt6395.dtsi"

@@ -1,0 +1,8 @@
+#
+# hwtcon drivers configuration
+#
+
+config MTK_HWTCON_SUPPORT
+	bool "Enable hwtcon driver"
+	help
+	  hwtcon driver for display image.

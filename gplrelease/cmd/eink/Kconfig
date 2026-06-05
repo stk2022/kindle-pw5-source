@@ -1,0 +1,28 @@
+menu "EINK command line interface"
+
+config CMD_HWID
+	bool "hwid - get HWID"
+	default y
+	help
+	  hwid support.
+
+config CMD_BOOTEINK
+	bool "booteink - boot eink fit image"
+	default y
+	help
+	  booteink command to boot eink fit boot image.
+
+config CMD_PROVISION
+	bool "provision - device provision"
+	default y
+	help
+	  device provision.
+
+config CMD_UTEST
+        bool "utest - factory test suite"
+	depends on TARGET_MT8110_BELLATRIX
+        default y
+        help
+          factory test suite support.
+
+endmenu

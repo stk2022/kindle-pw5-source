@@ -1,0 +1,63 @@
+/*
+ * Copyright (c) 2019 MediaTek Inc.
+ *
+ * SPDX-License-Identifier: (GPL-2.0 OR MIT)
+ */
+
+/dts-v1/;
+#include "mt8512fpga.dtsi"
+
+/ {
+	model = "MediaTek MT8512 FPGA board";
+	compatible = "mediatek,mt8512fpga", "mediatek,mt8512";
+
+	aliases {
+		serial0 = &uart0;
+	};
+
+	memory@40000000 {
+		device_type = "memory";
+		reg = <0 0x40000000 0 0x20000000>;
+	};
+
+	chosen {
+		bootargs = "console=ttyS0,921600n1 init=/init \
+		ubi.mtd=3,4096 root=ubi0:rootfs rootfstype=ubifs \
+		earlycon=uart8250,mmio32,0x11002000 skip_initramfs \
+		initcall_debug loglevel=8 androidboot.hardware=mt8512 \
+		firmware_class.path=/vendor/firmware";
+	};
+};
+
+&auxadc {
+	status = "okay";
+};
+
+&i2c0 {
+	status = "okay";
+};
+
+&i2c1 {
+	status = "okay";
+	clock-frequency = <400000>;
+
+	mt6395: mt6395@62 {
+		compatible = "mediatek,mt6395-regulator";
+		mt6395,irq-gpios = <&pio 62 0x0>;
+		reg = <0x62>;
+		status = "okay";
+	};
+};
+
+&i2c2 {
+	status = "okay";
+};
+
+&nandc {
+	status = "okay";
+};
+
+&uart0 {
+	status = "okay";
+};
+

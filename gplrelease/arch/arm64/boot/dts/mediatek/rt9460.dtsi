@@ -1,0 +1,33 @@
+/*
+ * Copyright (c) 2018 MediaTek Inc.
+ *
+ * SPDX-License-Identifier: (GPL-2.0 OR MIT)
+ */
+
+&rt9460 {
+	charger_name = "primary_chg";
+	ichg = <2000000>;	/* uA */
+	aicr = <500000>;	/* uA */
+	mivr = <4500000>;	/* uV */
+	cv = <4350000>;		/* uV */
+	ieoc = <250000>;	/* uA */
+	vprec = <2400000>;	/* uV */
+	iprec = <250000>;	/* uA */
+	vboost = <5000000>;	/* uV */
+	/* Fast charge safety timer */
+	/* 0: 4hrs, 1: 6hrs, 2: 8hrs, 3: 10hrs */
+	/* 4: 12hrs, 5: 14hrs, 6: 16hrs, 7: disabled */
+	wt_fc = <0x4>;
+	/* Pre charge safety timer */
+	/* 0: 30min, 1: 45min, 2: 60min, 3: disabled */
+	wt_prc = <0x0>;
+	/* Watchdog timer */
+	/* 0: 1s, 1: 2s, 2: 4s, 3: 8s */
+	twdt = <0x3>;
+	/* EOC back-charging time */
+	/* 0: 0min, 1: 30min, 2: 45min, 3: 60min */
+	eoc_timer = <0x0>;
+	enable_te;
+	/* enable_wdt; */
+	enable_safetimer;
+};

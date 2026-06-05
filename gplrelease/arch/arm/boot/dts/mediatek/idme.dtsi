@@ -1,0 +1,112 @@
+/ {
+	idme {
+		board_id {
+			value = "P00BL70123456789";
+			permission = <0x124>;
+		};
+		serial {
+			value = "G00FAKE123456789";
+			permission = <0x124>;
+		};
+		mac_addr {
+			value = "0007C91A14DE";
+			permission = <0x124>;
+		};
+		mac_sec {
+			value = "0";
+			permission = <0x124>;
+		};
+		bt_mac_addr {
+			value = "0";
+			permission = <0x124>;
+		};
+		bt_mfg {
+			value = "0";
+			permission = <0x124>;
+		};
+		product_name {
+			value = "0";
+			permission = <0x124>;
+		};
+		productid {
+			value = "0";
+			permission = <0x124>;
+		};
+		productid2 {
+			value = "0";
+			permission = <0x124>;
+		};
+		region {
+			value = "0";
+			permission = <0x124>;
+		};
+		bootmode {
+			value = "1";
+			permission = <0x124>;
+		};
+		postmode {
+			value = "0";
+			permission = <0x124>;
+		};
+		bootcount {
+			value = "0";
+			permission = <0x124>;
+		};
+		manufacturing {
+			value = "0";
+			permission = <0x124>;
+		};
+		unlock_code {
+			value = "0";
+			permission = <0x124>;
+		};
+		oldboot {
+			value = "0";
+			permission = <0x124>;
+		};
+		qbcount {
+			value = "0";
+			permission = <0x124>;
+		};
+		device_type_id {
+			value = "0";
+			permission = <0x124>;
+		};
+		vcom {
+			value = "1400";
+			permission = <0x124>;
+		};
+		fsn {
+			value = "0";
+			permission = <0x124>;
+		};
+		mfgdate {
+			value = "0";
+			permission = <0x124>;
+		};
+		dev_flags {
+			value = "0";
+			permission = <0x124>;
+		};
+		fos_flags {
+			value = "0";
+			permission = <0x124>;
+		};
+		usr_flags {
+			value = "0";
+			permission = <0x124>;
+		};
+		tz_keys {
+			value = "0";
+			permission = <0x124>;
+		};
+		alscal1 {
+			value = "0";
+			permission = <0x124>;
+		};
+		alscal2 {
+			value = "0";
+			permission = <0x124>;
+		};
+	};
+};

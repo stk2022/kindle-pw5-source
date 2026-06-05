@@ -1,0 +1,62 @@
+menu "EINK common library"
+
+config UFBL
+    bool "UFBL Library"
+    help
+      This library provides UFBL support.
+
+config FRONTLIGHT
+	bool "control frontlight"
+	depends on DM_BACKLIGHT
+	default y
+	help
+	  frontlight support.
+
+config DTB_SETUP
+	bool "eink device tree blob setup"
+	default y
+	select OF_BOARD_SETUP
+	help
+	  functions to setup eink dtb
+
+config HIBERNATION
+	bool "eink hibernation"
+	default n
+	select MISCDATA
+	help
+		eink hibernation support
+
+config MISCDATA
+	bool "eink misc data partition util"
+	default n
+	help
+	  eink misc partition util
+
+config MISCDATA_PARTITION
+	string "misc data partition"
+	default "miscdata"
+	help
+	  partition name of misc data
+
+config MISCDATA_FS
+	bool "filesystem in misc data partition"
+	default n
+	depends on MISCDATA
+	help
+		use filesystem for misc data partition
+
+config HIBERNATION_FALCON
+	bool "falcon hibernation functions"
+	default n
+	depends on FALCON
+	help
+	  falcon hibernation functions support.
+
+config EINK_DISPLAY
+	bool "eink display functions"
+	default n
+	depends on MTK_HWTCON_SUPPORT
+	help
+	  eink eink display functions support.
+
+endmenu
